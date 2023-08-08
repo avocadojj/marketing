@@ -1,7 +1,7 @@
 # Using dbt in this Repository with DAG
 In this project, we utilize dbt as part of our data processing workflow. Within our Directed Acyclic Graph (DAG), there are two main tasks: `dbt_init_task` and `run_dbt_task`. These tasks are further composed of several dbt commands:
 
-##DBT Commands:
+## DBT Commands:
 `dbt deps`: This command fetches and updates the dependencies that the dbt project relies on.
 
 `dbt seed`: This command loads seed files into the database. Seed files are CSV or YAML files that define some of the static data in your project.
@@ -12,7 +12,7 @@ In this project, we utilize dbt as part of our data processing workflow. Within 
 
 
 
-##Structure of the Workflow:
+## Structure of the Workflow:
 `dbt_init_task`: This task initializes the dbt environment.
 
 `run_dbt_task`: This task consists of several dbt commands that execute in sequence, including dbt deps, dbt seeds, dbt run, and dbt test.
@@ -52,7 +52,7 @@ This table provides a summary of client information, including total contacts an
 4. Campaign Summary Table
 This table provides a summary of campaign data, including the number of contacts for the current campaign, days since last contact, previous campaign contacts, and outcomes. It allows for a deeper analysis of campaign strategies and results.
 
-##Overall Structure and Reasoning
+## Overall Structure and Reasoning
 The entire code structure follows a typical data warehousing approach, where data is extracted, loaded, and transformed (ETL) into various dimensions and facts. By structuring the data this way, the organization can efficiently analyze different aspects of its marketing efforts, client behavior, and the influence of economic factors.
 
 This design supports advanced analytics and reporting, helping the organization make informed decisions. By using dbt's materialized views, the processing is optimized, allowing for efficient updates when underlying data changes.
