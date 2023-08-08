@@ -1,4 +1,4 @@
-#Using dbt in this Repository with DAG
+# Using dbt in this Repository with DAG
 In this project, we utilize dbt as part of our data processing workflow. Within our Directed Acyclic Graph (DAG), there are two main tasks: `dbt_init_task` and `run_dbt_task`. These tasks are further composed of several dbt commands:
 
 ##DBT Commands:
