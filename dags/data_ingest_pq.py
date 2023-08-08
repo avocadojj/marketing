@@ -185,7 +185,7 @@ with DAG(
     )
     run_dbt_task = BashOperator(
         task_id="run_dbt_task",
-        bash_command= "cd /opt/airflow/dbt/bank_marketing && dbt deps && dbt run --profiles-dir ."
+        bash_command= "cd /opt/airflow/dbt/bank_marketing && dbt run && dbt test --profiles-dir ."
     )
 
     finish = DummyOperator(task_id='finish')
