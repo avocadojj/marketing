@@ -163,14 +163,7 @@ python3 consumer.py
 ```
 localhost:9021
 ```
-
-![image](https://github.com/team2-df10/marketing/assets/122470555/bbcfae2e-4d8b-49d6-9900-9e8ddeff156f)
-
-
-7. Check on BigQuery to see the table
-
-![image](https://github.com/team2-df10/marketing/assets/122470555/9f2df713-08ca-4970-a106-d38959851742)
-
+![image](https://user-images.githubusercontent.com/108534539/230141014-bb9ef28b-af25-4fa8-b49a-ce5ef8f69aa2.png)
 
 ## Data Visualization Dashboard
 ![image](https://github.com/team2-df10/marketing/assets/122470555/9289bfb6-56d3-45c2-872c-238a7c47d346)

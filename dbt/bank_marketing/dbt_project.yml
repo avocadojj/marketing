@@ -26,7 +26,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
-
+#dbt_project.yml
+vars:
+  surrogate_key_treat_nulls_as_empty_strings: true #turn on legacy behaviour
 # In this example config, we tell dbt to build all models in the example/
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.

@@ -127,61 +127,70 @@ models:
           - not_null:
               severity: warn
 
-  - name: dim__EDUCATION
-    description: List of unique education level.
+  - name: dimEconomic
+    columns:
+      - name: EconomicContextID
+        tests:
+          - not_null
+          - unique
+      - name: cons_price_idx
+        tests:
+          - not_null
+        
+  - name: dimContact
+    columns:
+      - name: ContactID
+        tests:
+          - not_null
+          - unique
+      - name: duration
+        tests:
+          - not_null
+          
+  - name: dimClient
+    columns:
+      - name: ClientID
+        tests:
+          - not_null
+          - unique
 
-  - name: dim__MARITAL
-    description: List of unique martial status.
-
-  - name: dim__JOB
-    description: List of unique job client.
-
-  - name: dim__POUTCOME
-    description: List of unique outcome of the previous marketing campaign.
-
-  - name: dim__CONTACT
-    description: List of unique contact communication type.
-
-  - name: dim__CREDIT
-    description: List of unique credit type.
-
-  - name: dim__HOUSING
-    description: List of unique housing loan.
-
-  - name: dim__LOAN
-    description: List of unique personal loan.
+  - name: dimCampaign
+    columns:
+      - name: CampaignID
+        tests:
+          - not_null
+          - unique
+      # Add zero tests if needed for specific columns
 
   - name: fact__tables
-    description: A fact table is a table that contains the measurements, metrics or facts of a business process.
-
-  - name: partition__DATES
-    description: >
-      Partitioned View by Date, aims to:
-      1. Easier to manage and query data
-      2. Control costs by using query
-  
-  - name: subs_for_finance
-    description: "Number of subscribers based on credit, house loans and personal loans"
     columns:
-    - name: credit_type
-    - name: housing_loan
-    - name: personal_loan
-    - name: subs
-      tests:
-        - not_null
-    - name: not_subs
-      tests:
-        - not_null
-
-  - name: client__demographics
-    description: "Number of subscribers based on age, job, marital status and education"
-    columns:
-    - name: age
-    - name: job
-    - name: education
-    - name: credit
-    - name: housing
-    - name: loan
-    - name: subcribed
-      tests:
-        - not_null
+      - name: id
+        tests:
+          - not_null
+      - name: ClientID
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dimClient')
+              field: ClientID
+      - name: ContactID
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dimContact')
+              field:  ContactID
+      - name: CampaignID
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dimCampaign')
+              field: CampaignID
+      - name: economic_context
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dimEconomic')
+              field: EconomicContextID
+      - name: subcribed
+        tests:
+          - not_null      

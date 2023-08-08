@@ -1,41 +1,50 @@
-{{ config(materialized='view') }}
+{{ config(
+    materialized = 'view',
+    partition_by = {
+      "field": "date",
+      "data_type": "timestamp",
+      "granularity": "month"
+    },
+    cluster_by = 'day_of_week'
+)}}
 
 WITH fact__tables AS (
-    SELECT * 
+    SELECT *
     FROM {{ ref('stg__marketing') }}
 )
 
 SELECT
-    ft.client_id,
-    ft.age,
-    ij.ID_JOB,
-    im.ID_MARITAL,
-    ie.ID_EDUCATION,
-    icr.ID_CREDIT,
-    ih.ID_HOUSING,
-    il.ID_LOAN,
-    ic.ID_CONTACT,
-    ft.month,
-    ft.day_of_week,
-    ft.duration,
-    ft.campaign,
-    ft.pdays,
-    ft.previous,
-    ip.ID_POUTCOME,
-    ft.emp_var_rate,
-    ft.cons_price_idx,
-    ft.cons_conf_idx,
-    ft.euribor3m,
-    ft.nr_employed,
-    ft.subcribed   
-
+    ft.client_id as id,
+    dc.ClientID as ClientID,
+    dcon.ContactID as ContactID,
+    dca.CampaignID as CampaignID,
+    dec.EconomicContextID as economic_context,
+    ft.subcribed,
+    ft.date
 FROM
     fact__tables ft
-    LEFT JOIN {{ ref('dim__POUTCOME') }} ip ON ft.poutcome = ip.poutcome
-    LEFT JOIN {{ ref('dim__CONTACT') }} ic ON ft.contact = ic.contact
-    LEFT JOIN {{ ref('dim__CREDIT') }} icr ON ft.credit = icr.credit
-    LEFT JOIN {{ ref('dim__EDUCATION') }} ie ON ft.education = ie.education
-    LEFT JOIN {{ ref('dim__JOB') }} ij ON ft.job = ij.job
-    LEFT JOIN {{ ref('dim__MARITAL') }} im ON ft.marital = im.marital
-    LEFT JOIN {{ ref('dim__LOAN') }} il ON ft.loan = il.loan
-    LEFT JOIN {{ ref('dim__HOUSING') }} ih ON ft.housing = ih.housing
+    LEFT JOIN {{ ref('dimClient') }} dc 
+        ON ft.age = dc.age 
+        AND ft.job = dc.job
+        AND ft.marital = dc.marital
+        AND ft.education = dc.education 
+        AND ft.credit = dc.credit 
+        AND ft.housing = dc.housing 
+        AND ft.loan = dc.loan
+    LEFT JOIN {{ ref('dimContact') }} dcon 
+        ON ft.contact = dcon.contact 
+        AND ft.month = dcon.month 
+        AND ft.day_of_week =dcon.day_of_week 
+        AND ft.duration = dcon.duration
+    LEFT JOIN {{ ref('dimCampaign') }} dca 
+        ON ft.campaign = dca.campaign 
+        AND ft.pdays = dca.pdays 
+        AND ft.previous = dca.previous 
+        AND ft.poutcome = dca.poutcome
+    LEFT JOIN {{ ref('dimEconomic') }} dec 
+        ON ft.emp_var_rate =dec.emp_var_rate
+        AND ft.cons_price_idx =dec.cons_price_idx
+        AND ft.cons_conf_idx = dec.cons_conf_idx
+        AND ft.euribor3m = dec.euribor3m
+        AND ft.nr_employed = dec.nr_employed
+ORDER BY ft.date ASC
